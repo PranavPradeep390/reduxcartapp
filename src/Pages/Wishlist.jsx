@@ -20,8 +20,10 @@ function Wishlist() {
               <Card.Body>
                 <Card.Title>{product?.title}</Card.Title>
                 <div className='d-flex justify-content-between'>
-                <button onClick={()=>dispatch(removeWishlistItem(product?.id))}    className='btn '><i className='fa-solid fa-heart-circle-xmark text-primary'></i></button>
-              <button className='btn '><i className='fa-solid fa-cart-plus text-success'></i></button>
+
+                  <button onClick={()=>dispatch(removeWishlistItem(product?.id))}    className='btn '><i className='fa-solid fa-heart-circle-xmark text-primary'></i></button>
+
+                  <button className='btn '><i className='fa-solid fa-cart-plus text-success'></i></button>
 
                 </div>
               </Card.Body>

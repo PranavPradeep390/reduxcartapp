@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 function Header() {
+  const cartCount = useSelector(state=>state.cartReducer).length
   const wishlistCount= useSelector(state=>state.wishlistReducer).length
   return (
    <>
@@ -28,7 +29,7 @@ function Header() {
             <Nav.Link>
               
               <Link to={'/cart'} className='text-light fw-bolder ' style={{textDecoration:"none"}}>Cart 
-                 <Badge bg= "secondary"> 10</Badge>
+                 <Badge bg= "secondary">{cartCount}</Badge>
             
             </Link>
               

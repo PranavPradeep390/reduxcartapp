@@ -15,7 +15,7 @@ function Home() {
   <>
      <Header/>
      
-      <div className='container' style={{marginTop:"100px"}}>
+      <div className='container' style={{marginTop:"150px"}}>
       {  
       loading?<div className='mt-5 text-center fw-bolder'> <Spinner animation="border" role="status">
       <span className="visually-hidden">Loading...</span>
@@ -33,17 +33,15 @@ function Home() {
       <Card.Img style={{height:"180px"}} variant="top" src={product?.thumbnail} />
       <Card.Body>
         <Card.Title>{product?.title.slice(0,15)}...</Card.Title>
-        <Link to={`/view/${product?.id}`} variant="primary">View More...</Link>
+       <div className='text-center mt-4'> <Link to={`/view/${product?.id}`} variant="primary">View More...</Link></div>
       </Card.Body>
     </Card>
         </Col>
         )):
         <div className='fw-bolder text-primary text-center mt-5 mb-5 fs-5'>Nothing to display...</div>
 }
-</Row>
+        </Row>
         }
-       
-
       </div>
   </>
   )

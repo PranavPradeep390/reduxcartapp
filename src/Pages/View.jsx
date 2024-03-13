@@ -5,8 +5,11 @@ import { Link, useParams } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addWishlistItem } from '../REDUX/Slices/wishlistSlice'
+import { addToCart } from '../REDUX/Slices/cartSlice'
+
 
 function View() {
+  const cart = useSelector(state=>state.cartReducer)
   const wishlist = useSelector(state=>state.wishlistReducer)
   const dispatch = useDispatch()
   const [product,setProduct]= useState({})
@@ -15,7 +18,7 @@ function View() {
   useEffect(()=>{
     if(sessionStorage.getItem("allProducts")){
       const allProducts = JSON.parse(sessionStorage.getItem("allProducts"))
-     ( setProduct.getItem("allProducts"))
+    //  ( setProduct.getItem("allProducts"))
      setProduct(allProducts.find(item=>item.id==id))
     }
 
@@ -29,8 +32,19 @@ function View() {
         dispatch(addWishlistItem(product))
       }
   }
+   
+  const handleCart = (product)=>{
 
-
+    const existingProducts = cart?.find(item=>item.id==product.id)
+    if(existingProducts){
+      dispatch(addToCart(product))
+      alert("Products are added to your cart!!!")
+    }else{
+      dispatch(addToCart(product))
+      alert("Product added to your cart!!!")
+    }
+  }
+  
 
   return (
     <>
@@ -51,8 +65,10 @@ function View() {
                 <p style={{textAlign:"justify"}}> <b>Description</b> :{product?.description}</p>
 
                 <div className='d-flex justify-content-between'>
-                <Button onClick={()=>handleWishList(product)}  variant="info"> <i className="fa-regular fa-heart me-1"></i> <Link to={'/wishlist'} style={{textDecoration:"none"}}>Add To Wishlist</Link></Button>{' '}
-                <Button variant="info"> <i className="fa-solid fa-cart-shopping me-1"></i> <Link to={'/cart'} style={{textDecoration:"none"}} >Add To Cart</Link></Button>{' '}
+
+                <button onClick={()=>handleWishList(product)}  variant="info"> <i className="fa-regular fa-heart me-1"></i>Add To Wishlist</button>{' '}
+
+                <button onClick={()=>handleCart(product)} variant="info"> <i className="fa-solid fa-cart-shopping me-1"></i>Add To Cart</button>{' '}
 
                 </div>
 
@@ -67,6 +83,3 @@ function View() {
 }
 
 export default View
-
-
-
