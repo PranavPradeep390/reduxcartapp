@@ -2,10 +2,28 @@ import React from 'react'
 import { Row, Col,Card, Button } from 'react-bootstrap'
 import Header from '../Components/Header'
 import { useDispatch, useSelector } from 'react-redux'
+import { removeWishlistItem } from '../REDUX/Slices/wishlistSlice'
+import { addToCart } from '../REDUX/Slices/cartSlice'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Wishlist() {
+  const cart = useSelector(state=>state.cartReducer)
   const dispatch = useDispatch()
   const wishlist = useSelector(state=>state.wishlistReducer)
+
+  const handleCart = (product)=>{
+    const existingProducts = cart?.find(item=>item.id==product.id)
+    if(existingProducts){
+      dispatch(addToCart(product))
+      dispatch(removeWishlistItem(product.id))
+      toast.success("Products are added to your cart!!!")
+    }else{
+      dispatch(addToCart(product))
+      dispatch(removeWishlistItem(product.id))
+    }
+  }
+
   return (
     <>
       <Header />
@@ -23,7 +41,7 @@ function Wishlist() {
 
                   <button onClick={()=>dispatch(removeWishlistItem(product?.id))}    className='btn '><i className='fa-solid fa-heart-circle-xmark text-primary'></i></button>
 
-                  <button className='btn '><i className='fa-solid fa-cart-plus text-success'></i></button>
+                  <button onClick={()=>handleCart(product)} className='btn '><i className='fa-solid fa-cart-plus text-success'></i></button>
 
                 </div>
               </Card.Body>
@@ -39,6 +57,8 @@ function Wishlist() {
        }
 
       </div>
+      <ToastContainer position='top-center' theme='colored' autoClose={3000}/>
+
     </>
   )
 }

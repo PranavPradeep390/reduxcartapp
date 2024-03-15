@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../Components/Header'
 import { Link } from 'react-router-dom'
 import { Col,Card, Row, Spinner } from 'react-bootstrap'
@@ -6,14 +6,38 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchProducts } from '../REDUX/Slices/productSlice'
 
 function Home() {
+  const [currentPage,setCurrentPage] = useState(1)
+  const productsPerPage = 8
   const dispatch = useDispatch()
   const {allProducts,error,loading}= useSelector(state=>state.productReducer)
   console.log(allProducts,error,loading);
+  const totalPages =  Math.ceil(allProducts?.length/productsPerPage)
+  const lastProductindex = currentPage * productsPerPage
+  const firstProductindex = lastProductindex - productsPerPage
+  const visibleCards = allProducts?.slice(firstProductindex,lastProductindex)
+
 
   useEffect(()=>{dispatch(fetchProducts())},[])
+
+const navigateToNextPage = ()=>{
+  if(currentPage!=totalPages){
+    setCurrentPage(currentPage+1)
+
+  }
+}
+
+const navigateToPrevPage = ()=>{
+  if(currentPage!=1){
+    setCurrentPage(currentPage-1)
+
+  }
+}
+
+
+
   return (
   <>
-     <Header/>
+     <Header insideHome/>
      
       <div className='container' style={{marginTop:"150px"}}>
       {  
@@ -27,7 +51,7 @@ function Home() {
           
      { 
      allProducts?.length>0?
-     allProducts?.map(product=>(     
+     visibleCards?.map(product=>(     
      <Col className="mb-5" sm={12} md={6} lg={4} xl={3} >
         <Card className="shadow rounded" style={{ width: '18rem' }}>
       <Card.Img style={{height:"180px"}} variant="top" src={product?.thumbnail} />
@@ -38,10 +62,18 @@ function Home() {
     </Card>
         </Col>
         )):
-        <div className='fw-bolder text-primary text-center mt-5 mb-5 fs-5'>Nothing to display...</div>
+        <div style={{marginTop:"10px"}} className='fw-bolder text-primary text-center mb-5 fs-5'>No Products Found...</div>
 }
         </Row>
+
         }
+        <div className="d-flex justify-content-center align-items-center mt-5 mb-5">
+          <span onClick={navigateToPrevPage} style={{cursor:"pointer"}}><i className='fa-solid fa-backward me-5'></i></span>
+          <span className='fw-bolder'>{currentPage} of {totalPages}</span>
+          <span onClick={navigateToNextPage}style={{cursor:"pointer"}}><i className='fa-solid fa-forward ms-5'></i> </span>
+         
+
+        </div>
       </div>
   </>
   )

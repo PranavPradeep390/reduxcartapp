@@ -6,6 +6,8 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addWishlistItem } from '../REDUX/Slices/wishlistSlice'
 import { addToCart } from '../REDUX/Slices/cartSlice'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function View() {
@@ -38,10 +40,9 @@ function View() {
     const existingProducts = cart?.find(item=>item.id==product.id)
     if(existingProducts){
       dispatch(addToCart(product))
-      alert("Products are added to your cart!!!")
+      toast.success("Products are added to your cart!!!")
     }else{
       dispatch(addToCart(product))
-      alert("Product added to your cart!!!")
     }
   }
   
@@ -77,6 +78,7 @@ function View() {
           </div>
 
       </div>
+      <ToastContainer position='top-center' theme='colored' autoClose={3000}/>
     </>
     )
    

@@ -1,23 +1,25 @@
 import React from 'react'
-import { Badge } from 'react-bootstrap';
+import { Badge, NavLink } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { searchProducts } from '../REDUX/Slices/productSlice';
 
-function Header() {
+function Header({insideHome}) {
+  const dispatch = useDispatch()
   const cartCount = useSelector(state=>state.cartReducer).length
   const wishlistCount= useSelector(state=>state.wishlistReducer).length
   return (
    <>
      <Navbar  expand="lg" className="bg-info position-fixed top-0 w-100">
       <Container>
-        <Navbar.Brand Link to ={'/'}> <i className="fa-solid fa-truck-fast"></i> Cart</Navbar.Brand>
+        <Navbar.Brand > <i className="fa-solid fa-truck-fast"></i><Link style={{textDecoration:"none"}} to={'/'}> Cart</Link></Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <input style={{height:"50px",width:"260px",borderRadius:"10px"}} type="text" placeholder='Search Here' />
+          <Nav className="me-auto" >
+           { insideHome && <NavLink><input onChange={(e)=>dispatch(searchProducts(e.target.value.toLowerCase()))} style={{height:"50px",width:"260px",borderRadius:"10px"}} type="text" placeholder='Search Here' /></NavLink>}
             <Nav.Link>
               
               <Link to={'/wishlist'} className='text-light fw-bolder ' style={{textDecoration:"none"}}>Wishlist 
